@@ -21,9 +21,3 @@ The application features a robust relational database schema using SQLite and SQ
 *   **Database:** SQLite (managed via SQLAlchemy ORM)
 *   **Frontend:** HTML5, Tailwind CSS, JavaScript (Vanilla)
 
-## 🚀 Getting Started (Local Development)
-
-### 1. Clone the repository
-```bash
-git clone [https://github.com/YOUR_GITHUB_USERNAME/sobat-sehat-ai.git](https://github.com/YOUR_GITHUB_USERNAME/sobat-sehat-ai.git)
-cd sobat-sehat-ai
