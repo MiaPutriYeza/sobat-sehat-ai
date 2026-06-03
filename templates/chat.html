@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+{% set active_page = "chat" %}
+
+{% block content %}
+<div class="flex flex-col h-full bg-[#fcfdfd]">
+    <header class="flex items-center justify-between p-5 border-b border-gray-100 bg-white shadow-sm z-10">
+        <div class="flex items-center gap-4">
+            <button onclick="toggleSidebar()" class="text-gray-400 hover:text-gray-600 transition-colors p-1">
+                <svg id="chat-arrow-icon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+            </button>
+            
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-sage flex items-center justify-center text-white relative shadow-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></div>
+                </div>
+                <div>
+                    <h2 class="font-bold text-gray-800 text-sm">SobatSehat AI</h2>
+                    <p class="text-[11px] text-gray-500">Health Assistant • Always Available</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="chat-container" class="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar">
+        </div>
+
+    <div id="typing-indicator" class="hidden px-6 pb-2">
+        <div class="flex gap-3 max-w-[80%] items-center">
+            <div class="w-8 h-8 rounded-lg bg-sage flex-shrink-0 flex items-center justify-center text-white shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg rounded-tl-none border border-gray-200 flex gap-1">
+                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-4 bg-white border-t border-gray-100">
+        <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl px-4 py-1 focus-within:ring-2 focus-within:ring-sage/20 focus-within:border-sage transition-all">
+            
+            <div class="relative" id="custom-dropdown">
+                <button type="button" onclick="toggleModelMenu(event)" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-200/50 rounded-lg transition-colors group">
+                    <span id="current-model-name" class="text-xs font-bold text-gray-700">Groq</span>
+                    <svg id="arrow-icon" class="w-3.5 h-3.5 text-gray-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+
+                <div id="model-menu" class="hidden absolute bottom-full mb-4 left-0 w-72 bg-gray-100 border-2 border-sage/50 rounded-2xl shadow-xl p-2 z-50 transform origin-bottom-left transition-all scale-95 opacity-0">
+                    <p class="text-[10px] font-bold text-gray-400 px-4 py-2 uppercase tracking-[0.2em]">Model AI</p>
+                    
+                    <div onclick="selectModel('groq', 'Groq')" class="flex items-center justify-between p-4 hover:bg-sage/10 rounded-xl cursor-pointer group mb-1">
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-gray-800 group-hover:text-sage">Groq</span>
+                            <span class="text-[11px] text-gray-500">Menjawab dengan sangat cepat</span>
+                        </div>
+                        <div id="check-groq" class="check-icon w-5 h-5 bg-sage rounded-full flex items-center justify-center shadow-sm">
+                            <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                    </div>
+
+                    <div onclick="selectModel('gemini', 'Gemini')" class="flex items-center justify-between p-4 hover:bg-sage/10 rounded-xl cursor-pointer group">
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-gray-800 group-hover:text-sage">Gemini</span>
+                            <span class="text-[11px] text-gray-500">Kemampuan penalaran lebih dalam</span>
+                        </div>
+                        <div id="check-gemini" class="check-icon hidden w-5 h-5 bg-sage rounded-full flex items-center justify-center shadow-sm">
+                            <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-6 w-[1px] bg-gray-300 mx-1"></div>
+
+            <input type="text" id="message-input" placeholder="Tulis pesan ke SobatSehat..." class="flex-1 bg-transparent border-none focus:outline-none text-sm text-gray-700 py-3 w-full">
+            
+            <button id="send-button" class="text-sage hover:text-[#769e82] transition-colors p-1 pr-2">
+                <svg class="w-6 h-6 transform rotate-90" fill="currentColor" viewBox="0 0 20 20"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="ai-model-select" value="groq">
+
+<script>
+    const chatContainer = document.getElementById('chat-container');
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-button');
+    const typingIndicator = document.getElementById('typing-indicator');
+    
+    const modelMenu = document.getElementById('model-menu');
+    const arrowIcon = document.getElementById('arrow-icon');
+    const currentModelName = document.getElementById('current-model-name');
+    const hiddenModelInput = document.getElementById('ai-model-select');
+
+    let currentSessionId = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session_id');
+        if (sessionId) {
+            fetchFullChat(sessionId);
+        } else {
+            showWelcomeMessage();
+        }
+    });
+
+    function showWelcomeMessage() {
+        chatContainer.innerHTML = `
+            <div class="flex gap-3 max-w-[80%]">
+                <div class="w-8 h-8 rounded-lg bg-sage flex-shrink-0 flex items-center justify-center text-white mt-1 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                </div>
+                <div>
+                    <div class="bg-gray-100 text-gray-800 p-4 rounded-lg rounded-tl-none text-sm leading-relaxed border border-gray-200">
+                        Halo! Saya SobatSehat AI. Silakan masuk akun terlebih dahulu agar saya bisa menyimpan riwayat kesehatan Anda. Ada yang bisa saya bantu?
+                    </div>
+                    <span class="text-[10px] text-gray-400 mt-1 block pl-1">Sistem • Otomatis</span>
+                </div>
+            </div>
+        `;
+    }
+
+    window.startNewChatFromBase = function() {
+        currentSessionId = null;
+        window.history.pushState({}, '', '/chat'); 
+        showWelcomeMessage();
+    }
+
+    async function fetchFullChat(sessionId) {
+        currentSessionId = sessionId;
+        window.history.pushState({}, '', `/chat?session_id=${sessionId}`);
+        chatContainer.innerHTML = ''; 
+        
+        try {
+            const res = await fetch(`/api/history/messages/${sessionId}`);
+            const data = await res.json();
+            
+            if (res.ok && data.messages) {
+                data.messages.forEach(msg => {
+                    if (msg.sender === 'user') {
+                        addUserMessageToUI(msg.message);
+                    } else {
+                        addBotMessageToUI(msg.message, "Riwayat");
+                    }
+                });
+                scrollToBottom();
+            }
+        } catch(e) {
+            console.error("Gagal memuat isi chat", e);
+        }
+    }
+
+
+    function toggleModelMenu(event) {
+        event.stopPropagation();
+        const isHidden = modelMenu.classList.contains('hidden');
+        if (isHidden) {
+            modelMenu.classList.remove('hidden');
+            setTimeout(() => {
+                modelMenu.classList.remove('scale-95', 'opacity-0');
+                modelMenu.classList.add('scale-100', 'opacity-100');
+                arrowIcon.classList.add('rotate-180');
+            }, 10);
+        } else {
+            closeModelMenu();
+        }
+    }
+
+    function closeModelMenu() {
+        modelMenu.classList.remove('scale-100', 'opacity-100');
+        modelMenu.classList.add('scale-95', 'opacity-0');
+        arrowIcon.classList.remove('rotate-180');
+        setTimeout(() => { modelMenu.classList.add('hidden'); }, 200);
+    }
+
+    function selectModel(val, label) {
+        hiddenModelInput.value = val;
+        currentModelName.textContent = label;
+        document.querySelectorAll('.check-icon').forEach(icon => icon.classList.add('hidden'));
+        document.getElementById(`check-${val}`).classList.remove('hidden');
+        closeModelMenu();
+    }
+
+    document.addEventListener('click', () => {
+        if (!modelMenu.classList.contains('hidden')) closeModelMenu();
+    });
+
+    function getCurrentTime() {
+        return new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    }
+
+    function scrollToBottom() {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function addUserMessageToUI(message) {
+        const time = getCurrentTime();
+        const html = `
+        <div class="flex gap-3 justify-end w-full mb-6">
+            <div class="max-w-[70%] text-right">
+                <div class="bg-sage text-white p-4 rounded-lg rounded-tr-none text-sm leading-relaxed shadow-sm inline-block text-left">
+                    ${message}
+                </div>
+                <span class="text-[10px] text-gray-400 mt-1 block pr-1">Today, ${time}</span>
+            </div>
+        </div>`;
+        chatContainer.insertAdjacentHTML('beforeend', html);
+        scrollToBottom();
+    }
+
+    function addBotMessageToUI(message, modelName) {
+        const time = getCurrentTime();
+        const badgeColor = modelName === 'gemini' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600';
+        
+        let formattedMessage = message.replace(/\*\*(.*?)\*\*/g, '<b class="text-gray-900">$1</b>');
+        formattedMessage = formattedMessage.replace(/\n/g, '<br>');
+
+        const html = `
+        <div class="flex gap-3 max-w-[80%] mb-6">
+            <div class="w-8 h-8 rounded-lg bg-sage flex-shrink-0 flex items-center justify-center text-white mt-1 shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            </div>
+            <div>
+                <div class="bg-gray-100 text-gray-800 p-4 rounded-lg rounded-tl-none text-sm leading-relaxed border border-gray-200">
+                    ${formattedMessage}
+                </div>
+                <div class="flex items-center gap-2 mt-1 pl-1">
+                    <span class="text-[10px] ${badgeColor} px-1.5 py-0.5 rounded font-bold uppercase tracking-tighter">${modelName}</span>
+                    <span class="text-[10px] text-gray-400">Today, ${time}</span>
+                </div>
+            </div>
+        </div>`;
+        chatContainer.insertAdjacentHTML('beforeend', html);
+        scrollToBottom();
+    }
+
+    async function sendMessage() {
+        const message = messageInput.value.trim();
+        if (!message) return;
+
+        const userEmail = localStorage.getItem('userEmail');
+        if (!userEmail) {
+            showNotification("Silakan login untuk menyimpan riwayat chat.", 'error');
+            if (typeof toggleAuthModal === "function") toggleAuthModal();
+            return;
+        }
+        
+        const selectedModel = hiddenModelInput.value;
+        addUserMessageToUI(message);
+        messageInput.value = '';
+        typingIndicator.classList.remove('hidden');
+        scrollToBottom();
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    message: message, 
+                    model: selectedModel,
+                    session_id: currentSessionId 
+                })
+            });
+            
+            const data = await response.json();
+            typingIndicator.classList.add('hidden');
+            
+            if (response.status === 401 || data.response === "LOGIN_REQUIRED") {
+                showNotification("Sesi berakhir. Silakan login kembali.", "error");
+                location.reload();
+                return;
+            }
+
+            if(data.response) {
+               
+                if(data.session_id && currentSessionId !== data.session_id) {
+                    currentSessionId = data.session_id;
+                    window.history.pushState({}, '', `/chat?session_id=${currentSessionId}`);
+                }
+
+                addBotMessageToUI(data.response, selectedModel);
+                
+               
+                if (typeof loadHistory === "function") loadHistory();
+            } else {
+                addBotMessageToUI("Maaf, terjadi kesalahan pada server.", "system");
+                showNotification(data.error || "Terjadi kesalahan server.", "error");
+            }
+        } catch (error) {
+            typingIndicator.classList.add('hidden');
+            addBotMessageToUI("Koneksi terputus. Pastikan server Flask sedang berjalan.", "error");
+            showNotification("Gagal terhubung ke server.", "error");
+        }
+    }
+
+    sendButton.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+</script>
+{% endblock %}

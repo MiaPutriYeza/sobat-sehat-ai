@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% set active_page = "home" %}
+
+{% block content %}
+<div class="h-full overflow-y-auto p-8 pt-16 no-scrollbar relative">
+    
+    <div class="absolute left-5 top-5 z-30">
+        <button onclick="toggleSidebar()" class="text-gray-400 hover:text-gray-600 transition-colors p-1">
+            <svg id="chat-arrow-icon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+        </button>
+    </div>
+    
+    <div class="bg-cream rounded-xl flex overflow-hidden mb-10 shadow-sm border border-[#f5eedf]">
+        <div class="p-8 flex-1 flex flex-col justify-center">
+            <span class="text-sage font-bold text-xs uppercase tracking-widest mb-2">Tip Hari Ini</span>
+            <h1 class="text-2xl font-bold text-gray-900 mb-3">Pentingnya Stretching Pagi</h1>
+            <p class="text-gray-600 mb-6 leading-relaxed text-sm w-4/5">
+                Mulailah pagi Anda dengan peregangan ringan selama 10 menit untuk melancarkan sirkulasi darah dan meningkatkan fleksibilitas sepanjang hari.
+            </p>
+            <div>
+                <button onclick="openArticle('stretching')" class="bg-sage text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#769e82] transition-all shadow-md shadow-sage/20">
+                    Baca Tips Lengkap
+                </button>
+            </div>
+        </div>
+        <div class="w-5/12 hidden md:block">
+            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80" alt="Yoga" class="w-full h-full object-cover">
+        </div>
+    </div>
+
+    <div class="mb-10">
+        <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <span class="w-1.5 h-6 bg-sage rounded-full"></span>
+            Artikel Kesehatan
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div onclick="openArticle('nutrition')" class="group bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer">
+                <div class="relative overflow-hidden h-40 bg-gray-100">
+                    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=500&q=80" alt="Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-5">
+                    <h3 class="font-bold text-sm mb-2 text-gray-800 group-hover:text-sage transition-colors">Panduan Nutrisi untuk Pekerja Sibuk</h3>
+                    <p class="text-xs text-gray-500 mb-4 line-clamp-2 leading-relaxed">Temukan strategi persiapan makan sederhana dan resep bergizi yang cocok untuk jadwal padat Anda.</p>
+                    <div class="flex items-center text-[10px] font-bold text-gray-400 uppercase tracking-tighter gap-1">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        5 MENIT BACA
+                    </div>
+                </div>
+            </div>
+
+            <div onclick="openArticle('sleep')" class="group bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer">
+                <div class="relative overflow-hidden h-40 bg-gray-100">
+                    <img src="https://images.unsplash.com/photo-1541480601022-2308c0f02487?auto=format&fit=crop&w=500&q=80" alt="Sleep" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-5">
+                    <h3 class="font-bold text-sm mb-2 text-gray-800 group-hover:text-sage transition-colors">Rahasia Tidur Berkualitas</h3>
+                    <p class="text-xs text-gray-500 mb-4 line-clamp-2 leading-relaxed">Pelajari cara mengoptimalkan kualitas tidur Anda dengan teknik yang terbukti secara ilmiah.</p>
+                    <div class="flex items-center text-[10px] font-bold text-gray-400 uppercase tracking-tighter gap-1">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        8 MENIT BACA
+                    </div>
+                </div>
+            </div>
+
+            <div onclick="openArticle('stress')" class="group bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer">
+                <div class="relative overflow-hidden h-40 bg-gray-100">
+                    <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=500&q=80" alt="Meditation" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-5">
+                    <h3 class="font-bold text-sm mb-2 text-gray-800 group-hover:text-sage transition-colors">Manajemen Stres dengan Mindfulness</h3>
+                    <p class="text-xs text-gray-500 mb-4 line-clamp-2 leading-relaxed">Eksplorasi teknik meditasi sederhana yang dapat mengurangi kecemasan dan meningkatkan fokus.</p>
+                    <div class="flex items-center text-[10px] font-bold text-gray-400 uppercase tracking-tighter gap-1">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        6 MENIT BACA
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="article-modal" class="fixed inset-0 z-[100] hidden">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeArticle()"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden transition-all transform scale-95 opacity-0" id="modal-content">
+        <div class="h-64 relative bg-gray-200">
+            <img id="modal-img" src="" class="w-full h-full object-cover">
+            <button onclick="closeArticle()" class="absolute top-4 right-4 bg-black/20 hover:bg-black/40 text-white rounded-full p-2 backdrop-blur-md transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="p-8">
+            <h2 id="modal-title" class="text-2xl font-bold text-gray-900 mb-4"></h2>
+            <div id="modal-body" class="text-gray-600 leading-relaxed text-sm space-y-4 overflow-y-auto max-h-60 pr-2 no-scrollbar">
+            </div>
+            <div class="mt-8 pt-6 border-t border-gray-100 flex justify-end">
+                <button onclick="closeArticle()" class="bg-gray-100 text-gray-600 px-6 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const contentData = {
+        stretching: {
+            title: "Pentingnya Stretching Pagi",
+            image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80",
+            body: `
+                <p>Peregangan pagi sangat penting untuk "membangunkan" otot dan sendi Anda setelah berjam-jam tidak bergerak saat tidur. Manfaat utamanya meliputi:</p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>Meningkatkan Aliran Darah:</strong> Membantu oksigen sampai ke otak lebih cepat agar Anda tidak mengantuk.</li>
+                    <li><strong>Mengurangi Kaku Otot:</strong> Mencegah sakit punggung akibat posisi tidur yang salah.</li>
+                    <li><strong>Meningkatkan Mood:</strong> Peregangan melepaskan endorfin yang membuat perasaan lebih positif.</li>
+                </ul>
+                <p class="mt-4">Coba lakukan pose <i>Child's Pose</i> atau <i>Cat-Cow stretch</i> selama masing-masing 1 menit.</p>
+            `
+        },
+        nutrition: {
+            title: "Panduan Nutrisi untuk Pekerja Sibuk",
+            image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=500&q=80",
+            body: `
+                <p>Bagi profesional yang sibuk, makan sehat seringkali menjadi tantangan. Berikut adalah tips <i>meal prep</i> cepat:</p>
+                <ol class="list-decimal pl-5 space-y-2">
+                    <li><strong>Gunakan Metode Plate:</strong> 50% sayuran, 25% protein, dan 25% karbohidrat kompleks.</li>
+                    <li><strong>Siapkan di Akhir Pekan:</strong> Potong sayuran dan masak protein untuk 3 hari ke depan.</li>
+                    <li><strong>Snack Sehat:</strong> Selalu simpan kacang-kacangan atau buah di meja kerja untuk menghindari gorengan.</li>
+                </ol>
+            `
+        },
+        sleep: {
+            title: "Rahasia Tidur Berkualitas",
+            image: "https://images.unsplash.com/photo-1541480601022-2308c0f02487?auto=format&fit=crop&w=500&q=80",
+            body: `
+                <p>Tidur bukan hanya soal durasi, tapi soal kualitas. Peneliti menyarankan:</p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>Digital Detox:</strong> Matikan ponsel 30 menit sebelum tidur karena cahaya biru menghambat melatonin.</li>
+                    <li><strong>Suhu Kamar:</strong> Pastikan kamar sejuk (sekitar 20-22 derajat Celsius).</li>
+                    <li><strong>Jadwal Tetap:</strong> Usahakan bangun dan tidur di jam yang sama setiap hari.</li>
+                </ul>
+            `
+        },
+        stress: {
+            title: "Manajemen Stres dengan Mindfulness",
+            image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=500&q=80",
+            body: `
+                <p>Mindfulness adalah praktik memusatkan perhatian sepenuhnya pada saat ini. Ini sangat efektif mengurangi stres kerja:</p>
+                <p>Coba teknik 4-7-8: Tarik napas 4 detik, tahan 7 detik, dan buang napas perlahan melalui mulut selama 8 detik. Lakukan ini saat Anda mulai merasa kewalahan di kantor.</p>
+            `
+        }
+    };
+
+    function openArticle(id) {
+        const data = contentData[id];
+        const modal = document.getElementById('article-modal');
+        const content = document.getElementById('modal-content');
+        
+        document.getElementById('modal-title').innerText = data.title;
+        document.getElementById('modal-img').src = data.image;
+        document.getElementById('modal-body').innerHTML = data.body;
+        
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            content.classList.remove('scale-95', 'opacity-0');
+            content.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    function closeArticle() {
+        const modal = document.getElementById('article-modal');
+        const content = document.getElementById('modal-content');
+        
+        content.classList.remove('scale-100', 'opacity-100');
+        content.classList.add('scale-95', 'opacity-0');
+        
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,10 @@
+# Mengabaikan file yang berisi kunci API
+.env
+
+# Mengabaikan database SQLite lokal
+instance/
+*.db
+
+# Mengabaikan cache python
+__pycache__/
+*.pyc
